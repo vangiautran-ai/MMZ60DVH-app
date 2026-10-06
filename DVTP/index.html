@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Lịch Vệ Sinh Giờ Vàng - MemoryZone 60 Dịch Vọng Hậu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen py-8 px-4 font-sans">
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <!-- Banner Header MemoryZone Brand Green -->
+        <div class="bg-emerald-700 text-white p-6 text-center relative">
+            <div class="inline-block p-2 bg-white rounded-xl shadow-md mb-2">
+                <span class="text-emerald-700 font-black text-xl tracking-wider">Memory<span class="text-lime-500">Zone</span></span>
+            </div>
+            <h1 class="text-lg font-bold uppercase tracking-wide text-white">ĐẶT LỊCH VỆ SINH MÁY "GIỜ VÀNG"</h1>
+            <p class="text-xs text-emerald-100 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>Chỉ áp dụng tại 60 Dịch Vọng Hậu, Cầu Giấy</p>
+            <div class="mt-3 inline-flex items-center gap-2 bg-lime-400 text-emerald-950 text-xs font-bold px-3 py-1 rounded-full shadow-inner">
+                <i class="fa-solid fa-clock"></i> Khung Giờ: 10h00 - 13h00 (T2 - T6)
+            </div>
+        </div>
+
+        <!-- Form Đặt Lịch Đầy Đủ Tất Cả Các Trường -->
+        <form id="bookingForm" class="p-6 space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Họ và tên khách hàng <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fa-regular fa-user"></i></span>
+                    <input type="text" id="ho_ten" required placeholder="Nguyễn Văn A" class="pl-10 w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Số điện thoại / Zalo <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fa-solid fa-phone"></i></span>
+                    <input type="tel" id="sdt" required placeholder="0901234567" class="pl-10 w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Thiết bị <span class="text-red-500">*</span></label>
+                    <select id="loai_thiet_bi" required class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                        <option value="">-- Chọn --</option>
+                        <option value="Laptop">Laptop (~30p)</option>
+                        <option value="PC">PC / Để bàn (~60p)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Giờ hẹn <span class="text-red-500">*</span></label>
+                    <select id="khung_gio" required class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                        <option value="10h00 - 11h00">10h00 - 11h00</option>
+                        <option value="11h00 - 12h00">11h00 - 12h00</option>
+                        <option value="12h00 - 13h00">12h00 - 13h00</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Ngày đăng ký (T2 - T6) <span class="text-red-500">*</span></label>
+                <input type="date" id="ngay_hen" required class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Ghi chú tình trạng máy</label>
+                <textarea id="ghi_chu" rows="2" placeholder="Ví dụ: Máy quạt kêu to, bị nóng khi chơi game..." class="w-full border border-gray-300 rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none"></textarea>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-3 rounded text-xs text-blue-900 leading-relaxed">
+                <i class="fa-solid fa-circle-info mr-1 text-blue-600"></i><strong>Lưu ý:</strong> Giới hạn <strong>05 suất/ngày</strong>. Kỹ thuật viên sẽ trực tiếp kiểm tra tình trạng máy và tư vấn gói dịch vụ ưu đãi phù hợp nhất khi quý khách mang máy tới.
+            </div>
+
+            <button type="submit" id="btnSubmit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-xl transition duration-200 text-sm tracking-wider uppercase">
+                XÁC NHẬN ĐẶT LỊCH GIỜ VÀNG
+            </button>
+        </form>
+
+        <div id="responseMessage" class="mx-6 mb-6 hidden p-4 rounded-xl text-sm font-medium"></div>
+    </div>
+
+    <script>
+        document.getElementById('ngay_hen').min = new Date().toISOString().split('T')[0];
+
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmit');
+            const msg = document.getElementById('responseMessage');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang đăng ký...';
+            msg.className = 'mx-6 mb-6 hidden p-4 rounded-xl text-sm font-medium';
+
+            const payload = {
+                ho_ten: document.getElementById('ho_ten').value,
+                sdt: document.getElementById('sdt').value,
+                loai_thiet_bi: document.getElementById('loai_thiet_bi').value,
+                ngay_hen: document.getElementById('ngay_hen').value,
+                khung_gio: document.getElementById('khung_gio').value,
+                ghi_chu: document.getElementById('ghi_chu').value
+            };
+
+            try {
+                const res = await fetch('/api/booking', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                msg.classList.remove('hidden');
+                if (data.success) {
+                    msg.classList.add('bg-green-50', 'border', 'border-green-200', 'text-green-800');
+                    msg.innerHTML = `<i class="fa-solid fa-circle-check text-green-600 mr-2 text-lg"></i><strong>${data.message}</strong><br><span class="text-xs text-gray-600">Mã đặt lịch: <strong>#MMZ-${data.booking_id}</strong>. Team Kỹ thuật MemoryZone Hà Nội sẽ liên hệ Zalo xác nhận giữ chỗ!</span>`;
+                    document.getElementById('bookingForm').reset();
+                } else {
+                    msg.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800');
+                    msg.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i> ${data.message}`;
+                }
+            } catch (err) {
+                msg.classList.remove('hidden');
+                msg.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800');
+                msg.innerHTML = '❌ Lỗi kết nối mạng, vui lòng thử lại!';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'XÁC NHẬN ĐẶT LỊCH GIỜ VÀNG';
+            }
+        });
+    </script>
+</body>
+</html>

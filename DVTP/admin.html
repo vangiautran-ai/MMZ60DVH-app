@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ Thống Quản Lý Đặt Lịch - Kỹ Thuật MemoryZone Hà Nội</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header Kỹ Thuật Green Brand -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-600 text-white px-3 py-2 rounded-lg font-black tracking-wider text-xl">
+                    Memory<span class="text-lime-400">Zone</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800">QUẢN LÝ ĐẶT LỊCH GIỜ VÀNG</h1>
+                    <p class="text-xs text-gray-500"><i class="fa-solid fa-building-user mr-1"></i>Bộ phận Kỹ Thuật - 60 Dịch Vọng Hậu, Hà Nội</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <label class="text-xs font-bold text-gray-600 uppercase">Lọc ngày:</label>
+                <input type="date" id="filterDate" class="border border-gray-300 p-2 rounded-lg text-sm outline-none focus:border-emerald-500">
+                <button onclick="loadBookings()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition">
+                    <i class="fa-solid fa-rotate mr-1"></i> Làm mới
+                </button>
+            </div>
+        </div>
+
+        <!-- Bảng Dữ Liệu -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-emerald-800 text-white text-xs font-bold uppercase tracking-wider">
+                        <th class="p-3.5">Mã Booking</th>
+                        <th class="p-3.5">Khách hàng / SĐT</th>
+                        <th class="p-3.5">Thiết bị</th>
+                        <th class="p-3.5">Ngày & Giờ hẹn</th>
+                        <th class="p-3.5">Ghi chú tình trạng</th>
+                        <th class="p-3.5">Trạng thái xử lý</th>
+                        <th class="p-3.5">Cập nhật</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingTable" class="text-sm divide-y divide-gray-200">
+                    <!-- Dữ liệu render từ API -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadBookings() {
+            const date = document.getElementById('filterDate').value;
+            let url = '/api/admin/bookings';
+            if (date) url += `?ngay=${date}`;
+
+            const res = await fetch(url);
+            const result = await res.json();
+            const tbody = document.getElementById('bookingTable');
+            tbody.innerHTML = '';
+
+            if (result.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-400 font-medium">Chưa có lịch đăng ký nào trong danh sách.</td></tr>`;
+                return;
+            }
+
+            result.data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-emerald-50/40 transition';
+                tr.innerHTML = `
+                    <td class="p-3.5 font-bold text-emerald-700">#MMZ-${item.id}</td>
+                    <td class="p-3.5">
+                        <div class="font-semibold text-gray-900">${item.ho_ten}</div>
+                        <div class="text-xs text-gray-500"><i class="fa-brands fa-whatsapp text-green-600 mr-1"></i>${item.sdt}</div>
+                    </td>
+                    <td class="p-3.5 font-bold ${item.loai_thiet_bi === 'PC' ? 'text-purple-600' : 'text-emerald-600'}">
+                        ${item.loai_thiet_bi === 'PC' ? '<i class="fa-solid fa-desktop mr-1"></i>' : '<i class="fa-solid fa-laptop mr-1"></i>'}
+                        ${item.loai_thiet_bi}
+                    </td>
+                    <td class="p-3.5">
+                        <span class="font-semibold text-gray-800">${item.ngay_hen}</span><br>
+                        <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">${item.khung_gio}</span>
+                    </td>
+                    <td class="p-3.5 text-xs text-gray-600 max-w-xs truncate">${item.ghi_chu || '-'}</td>
+                    <td class="p-3.5">
+                        <span class="px-2.5 py-1 text-xs font-bold rounded-full ${getStatusStyle(item.trang_thai)}">
+                            ${item.trang_thai}
+                        </span>
+                    </td>
+                    <td class="p-3.5">
+                        <select onchange="updateStatus(${item.id}, this.value)" class="text-xs border border-gray-300 rounded-lg p-1.5 focus:border-emerald-500 outline-none">
+                            <option value="Chờ tiếp nhận" ${item.trang_thai === 'Chờ tiếp nhận' ? 'selected' : ''}>Chờ tiếp nhận</option>
+                            <option value="Đã nhận máy" ${item.trang_thai === 'Đã nhận máy' ? 'selected' : ''}>Đã nhận máy</option>
+                            <option value="Đang vệ sinh" ${item.trang_thai === 'Đang vệ sinh' ? 'selected' : ''}>Đang vệ sinh</option>
+                            <option value="Hoàn thành" ${item.trang_thai === 'Hoàn thành' ? 'selected' : ''}>Hoàn thành</option>
+                            <option value="Đã hủy" ${item.trang_thai === 'Đã hủy' ? 'selected' : ''}>Đã hủy</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function getStatusStyle(status) {
+            switch(status) {
+                case 'Hoàn thành': return 'bg-green-100 text-green-800';
+                case 'Đang vệ sinh': return 'bg-blue-100 text-blue-800';
+                case 'Đã nhận máy': return 'bg-yellow-100 text-yellow-800';
+                case 'Đã hủy': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-200 text-gray-700';
+            }
+        }
+
+        async function updateStatus(id, trang_thai) {
+            await fetch(`/api/admin/bookings/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ trang_thai })
+            });
+            loadBookings();
+        }
+
+        document.getElementById('filterDate').addEventListener('change', loadBookings);
+        loadBookings();
+    </script>
+</body>
+</html>
