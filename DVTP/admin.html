@@ -7,9 +7,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-6 font-sans">
-    <div class="max-w-6xl mx-auto">
-        <!-- Header Kỹ Thuật Green Brand -->
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="max-w-6xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="bg-emerald-600 text-white px-3 py-2 rounded-lg font-black tracking-wider text-xl">
                     Memory<span class="text-lime-400">Zone</span>
@@ -20,49 +21,126 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <label class="text-xs font-bold text-gray-600 uppercase">Lọc ngày:</label>
-                <input type="date" id="filterDate" class="border border-gray-300 p-2 rounded-lg text-sm outline-none focus:border-emerald-500">
-                <button onclick="loadBookings()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition">
-                    <i class="fa-solid fa-rotate mr-1"></i> Làm mới
+            <div class="flex bg-gray-100 p-1 rounded-lg border">
+                <button id="btnTabBookings" onclick="switchTab('bookings')" class="px-4 py-2 text-xs font-bold rounded-md bg-white text-emerald-700 shadow-sm transition">
+                    <i class="fa-solid fa-list-check mr-1"></i> Danh sách Đặt Lịch
+                </button>
+                <button id="btnTabSummary" onclick="switchTab('summary')" class="px-4 py-2 text-xs font-bold rounded-md text-gray-600 hover:text-emerald-700 transition">
+                    <i class="fa-solid fa-chart-pie mr-1"></i> Sheet Thống Kê Ngày
                 </button>
             </div>
         </div>
 
-        <!-- Bảng Dữ Liệu -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-emerald-800 text-white text-xs font-bold uppercase tracking-wider">
-                        <th class="p-3.5">Mã Booking</th>
-                        <th class="p-3.5">Khách hàng / SĐT</th>
-                        <th class="p-3.5">Thiết bị</th>
-                        <th class="p-3.5">Ngày & Giờ hẹn</th>
-                        <th class="p-3.5">Ghi chú tình trạng</th>
-                        <th class="p-3.5">Trạng thái xử lý</th>
-                        <th class="p-3.5">Cập nhật</th>
-                    </tr>
-                </thead>
-                <tbody id="bookingTable" class="text-sm divide-y divide-gray-200">
-                    <!-- Dữ liệu render từ API -->
-                </tbody>
-            </table>
+        <!-- TAB DANH SÁCH -->
+        <div id="viewBookings" class="space-y-4">
+            <!-- Thanh Lọc Ngày & Trạng Thái -->
+            <div class="flex flex-wrap justify-between items-center bg-white p-4 rounded-xl border border-gray-200 gap-3">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs font-bold text-gray-600 uppercase">Lọc Ngày:</label>
+                        <input type="date" id="filterDate" class="border border-gray-300 p-2 rounded-lg text-sm outline-none focus:border-emerald-500">
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs font-bold text-gray-600 uppercase">Trạng Thái:</label>
+                        <select id="filterStatus" class="border border-gray-300 p-2 rounded-lg text-sm outline-none focus:border-emerald-500 font-medium">
+                            <option value="">-- Tất cả trạng thái --</option>
+                            <option value="Chờ tiếp nhận">Chờ tiếp nhận</option>
+                            <option value="Đã nhận máy">Đã nhận máy</option>
+                            <option value="Đang vệ sinh">Đang vệ sinh</option>
+                            <option value="Hoàn thành">Hoàn thành</option>
+                            <option value="Đã hủy">Đã hủy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="loadBookings()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition">
+                    <i class="fa-solid fa-rotate mr-1"></i> Làm mới
+                </button>
+            </div>
+
+            <!-- Bảng dữ liệu -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-emerald-800 text-white text-xs font-bold uppercase tracking-wider">
+                            <th class="p-3.5">Mã Booking</th>
+                            <th class="p-3.5">Khách hàng / SĐT</th>
+                            <th class="p-3.5">Thiết bị</th>
+                            <th class="p-3.5">Ngày & Giờ hẹn</th>
+                            <th class="p-3.5">Ghi chú</th>
+                            <th class="p-3.5">Trạng thái</th>
+                            <th class="p-3.5">Cập nhật</th>
+                            <th class="p-3.5 text-center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingTable" class="text-sm divide-y divide-gray-200"></tbody>
+                </table>
+            </div>
         </div>
+
+        <!-- TAB SHEET THỐNG KÊ -->
+        <div id="viewSummary" class="hidden space-y-4">
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex justify-between items-center">
+                <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wide"><i class="fa-solid fa-table mr-2 text-emerald-600"></i>Sheet Tổng Hợp Số Lượng & Slot Từng Ngày</h2>
+                <button onclick="loadSummaryStats()" class="bg-gray-800 hover:bg-black text-white text-xs font-bold px-3 py-2 rounded-lg">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i> Tải lại Sheet
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-800 text-white text-xs font-bold uppercase tracking-wider">
+                            <th class="p-3.5">Ngày Đăng Ký</th>
+                            <th class="p-3.5">Slot Đã Dùng</th>
+                            <th class="p-3.5">Trạng Thái Slot</th>
+                            <th class="p-3.5">Chờ Xác Nhận</th>
+                            <th class="p-3.5">Đã Nhận Máy</th>
+                            <th class="p-3.5">Đang Vệ Sinh</th>
+                            <th class="p-3.5">Hoàn Thành</th>
+                            <th class="p-3.5">Đã Hủy (Đã Nhả)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="summaryTable" class="text-sm divide-y divide-gray-200"></tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        function switchTab(tab) {
+            if (tab === 'bookings') {
+                document.getElementById('viewBookings').classList.remove('hidden');
+                document.getElementById('viewSummary').classList.add('hidden');
+                document.getElementById('btnTabBookings').className = 'px-4 py-2 text-xs font-bold rounded-md bg-white text-emerald-700 shadow-sm transition';
+                document.getElementById('btnTabSummary').className = 'px-4 py-2 text-xs font-bold rounded-md text-gray-600 hover:text-emerald-700 transition';
+                loadBookings();
+            } else {
+                document.getElementById('viewBookings').classList.add('hidden');
+                document.getElementById('viewSummary').classList.remove('hidden');
+                document.getElementById('btnTabSummary').className = 'px-4 py-2 text-xs font-bold rounded-md bg-white text-emerald-700 shadow-sm transition';
+                document.getElementById('btnTabBookings').className = 'px-4 py-2 text-xs font-bold rounded-md text-gray-600 hover:text-emerald-700 transition';
+                loadSummaryStats();
+            }
+        }
+
         async function loadBookings() {
             const date = document.getElementById('filterDate').value;
-            let url = '/api/admin/bookings';
-            if (date) url += `?ngay=${date}`;
+            const status = document.getElementById('filterStatus').value;
+            
+            let url = '/api/admin/bookings?';
+            if (date) url += `ngay=${date}&`;
+            if (status) url += `trang_thai=${encodeURIComponent(status)}`;
 
             const res = await fetch(url);
             const result = await res.json();
             const tbody = document.getElementById('bookingTable');
             tbody.innerHTML = '';
 
-            if (result.data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-400 font-medium">Chưa có lịch đăng ký nào trong danh sách.</td></tr>`;
+            if (!result.data || result.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-gray-400 font-medium">Không tìm thấy đơn đặt lịch phù hợp.</td></tr>`;
                 return;
             }
 
@@ -73,31 +151,59 @@
                     <td class="p-3.5 font-bold text-emerald-700">#MMZ-${item.id}</td>
                     <td class="p-3.5">
                         <div class="font-semibold text-gray-900">${item.ho_ten}</div>
-                        <div class="text-xs text-gray-500"><i class="fa-brands fa-whatsapp text-green-600 mr-1"></i>${item.sdt}</div>
+                        <div class="text-xs text-gray-500"><i class="fa-solid fa-phone text-emerald-600 mr-1"></i>${item.sdt}</div>
                     </td>
-                    <td class="p-3.5 font-bold ${item.loai_thiet_bi === 'PC' ? 'text-purple-600' : 'text-emerald-600'}">
-                        ${item.loai_thiet_bi === 'PC' ? '<i class="fa-solid fa-desktop mr-1"></i>' : '<i class="fa-solid fa-laptop mr-1"></i>'}
-                        ${item.loai_thiet_bi}
-                    </td>
+                    <td class="p-3.5 font-bold ${item.loai_thiet_bi === 'PC' ? 'text-purple-600' : 'text-emerald-600'}">${item.loai_thiet_bi}</td>
                     <td class="p-3.5">
                         <span class="font-semibold text-gray-800">${item.ngay_hen}</span><br>
                         <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">${item.khung_gio}</span>
                     </td>
                     <td class="p-3.5 text-xs text-gray-600 max-w-xs truncate">${item.ghi_chu || '-'}</td>
-                    <td class="p-3.5">
-                        <span class="px-2.5 py-1 text-xs font-bold rounded-full ${getStatusStyle(item.trang_thai)}">
-                            ${item.trang_thai}
-                        </span>
-                    </td>
+                    <td class="p-3.5"><span class="px-2.5 py-1 text-xs font-bold rounded-full ${getStatusStyle(item.trang_thai)}">${item.trang_thai}</span></td>
                     <td class="p-3.5">
                         <select onchange="updateStatus(${item.id}, this.value)" class="text-xs border border-gray-300 rounded-lg p-1.5 focus:border-emerald-500 outline-none">
                             <option value="Chờ tiếp nhận" ${item.trang_thai === 'Chờ tiếp nhận' ? 'selected' : ''}>Chờ tiếp nhận</option>
                             <option value="Đã nhận máy" ${item.trang_thai === 'Đã nhận máy' ? 'selected' : ''}>Đã nhận máy</option>
                             <option value="Đang vệ sinh" ${item.trang_thai === 'Đang vệ sinh' ? 'selected' : ''}>Đang vệ sinh</option>
                             <option value="Hoàn thành" ${item.trang_thai === 'Hoàn thành' ? 'selected' : ''}>Hoàn thành</option>
-                            <option value="Đã hủy" ${item.trang_thai === 'Đã hủy' ? 'selected' : ''}>Đã hủy</option>
+                            <option value="Đã hủy" ${item.trang_thai === 'Đã hủy' ? 'selected' : ''}>Đã hủy (Nhả slot)</option>
                         </select>
                     </td>
+                    <td class="p-3.5 text-center">
+                        <button onclick="deleteBooking(${item.id}, '${item.ho_ten}')" class="bg-red-50 hover:bg-red-500 text-red-600 hover:text-white p-2 rounded-lg text-xs font-bold transition">
+                            <i class="fa-regular fa-trash-can"></i> Xóa
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function loadSummaryStats() {
+            const res = await fetch('/api/admin/summary-stats');
+            const result = await res.json();
+            const tbody = document.getElementById('summaryTable');
+            tbody.innerHTML = '';
+
+            if (!result.data || result.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-gray-400 font-medium">Chưa có dữ liệu thống kê.</td></tr>`;
+                return;
+            }
+
+            result.data.forEach(item => {
+                const used = item.used_slots_count;
+                const isFull = used >= 6;
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 transition';
+                tr.innerHTML = `
+                    <td class="p-3.5 font-bold text-gray-900">${item.ngay_hen}</td>
+                    <td class="p-3.5 font-bold ${isFull ? 'text-red-600' : 'text-emerald-600'}">${used}/6 Slot 30p</td>
+                    <td class="p-3.5"><span class="px-2 py-1 rounded text-xs font-bold ${isFull ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${isFull ? 'ĐÃ KÍN SLOT' : 'Còn trống'}</span></td>
+                    <td class="p-3.5 font-semibold text-gray-600">${item.cho_tiep_nhan}</td>
+                    <td class="p-3.5 font-semibold text-yellow-600">${item.da_nhan_may}</td>
+                    <td class="p-3.5 font-semibold text-blue-600">${item.dang_ve_sinh}</td>
+                    <td class="p-3.5 font-semibold text-green-600">${item.hoan_thanh}</td>
+                    <td class="p-3.5 font-semibold text-red-500">${item.da_huy}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -122,7 +228,15 @@
             loadBookings();
         }
 
+        async function deleteBooking(id, name) {
+            if (confirm(`Bạn có chắc chắn muốn XÓA đơn đặt lịch #${id} của khách "${name}"?`)) {
+                await fetch(`/api/admin/bookings/${id}`, { method: 'DELETE' });
+                loadBookings();
+            }
+        }
+
         document.getElementById('filterDate').addEventListener('change', loadBookings);
+        document.getElementById('filterStatus').addEventListener('change', loadBookings);
         loadBookings();
     </script>
 </body>

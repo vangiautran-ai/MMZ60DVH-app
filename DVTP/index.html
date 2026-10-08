@@ -9,7 +9,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen py-8 px-4 font-sans">
     <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-        <!-- Banner Header MemoryZone Brand Green -->
+        <!-- Header -->
         <div class="bg-emerald-700 text-white p-6 text-center relative">
             <div class="inline-block p-2 bg-white rounded-xl shadow-md mb-2">
                 <span class="text-emerald-700 font-black text-xl tracking-wider">Memory<span class="text-lime-500">Zone</span></span>
@@ -21,13 +21,13 @@
             </div>
         </div>
 
-        <!-- Form Đặt Lịch Đầy Đủ Tất Cả Các Trường -->
+        <!-- Form -->
         <form id="bookingForm" class="p-6 space-y-4">
             <div>
                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Họ và tên khách hàng <span class="text-red-500">*</span></label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fa-regular fa-user"></i></span>
-                    <input type="text" id="ho_ten" required placeholder="Nguyễn Văn A" class="pl-10 w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition">
+                    <input type="text" id="ho_ten" required placeholder="Nguyễn Văn A" class="pl-10 w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
             </div>
 
@@ -35,7 +35,7 @@
                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Số điện thoại / Zalo <span class="text-red-500">*</span></label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fa-solid fa-phone"></i></span>
-                    <input type="tel" id="sdt" required placeholder="0901234567" class="pl-10 w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none transition">
+                    <input type="tel" id="sdt" required placeholder="0901234567" class="pl-10 w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
             </div>
 
@@ -44,23 +44,23 @@
                     <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Thiết bị <span class="text-red-500">*</span></label>
                     <select id="loai_thiet_bi" required class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                         <option value="">-- Chọn --</option>
-                        <option value="Laptop">Laptop (~30p)</option>
-                        <option value="PC">PC / Để bàn (~60p)</option>
+                        <option value="Laptop">Laptop (30 phút)</option>
+                        <option value="PC">PC / Đề bàn (60 phút)</option>
                     </select>
                 </div>
+
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Giờ hẹn <span class="text-red-500">*</span></label>
-                    <select id="khung_gio" required class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
-                        <option value="10h00 - 11h00">10h00 - 11h00</option>
-                        <option value="11h00 - 12h00">11h00 - 12h00</option>
-                        <option value="12h00 - 13h00">12h00 - 13h00</option>
-                    </select>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Ngày đăng ký <span class="text-red-500">*</span></label>
+                    <input type="date" id="ngay_hen" required class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Ngày đăng ký (T2 - T6) <span class="text-red-500">*</span></label>
-                <input type="date" id="ngay_hen" required class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Khung giờ hẹn <span class="text-red-500">*</span></label>
+                <select id="khung_gio" required disabled class="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none bg-gray-50">
+                    <option value="">-- Chọn ngày & thiết bị trước --</option>
+                </select>
+                <p id="slotWarning" class="text-xs text-red-600 font-semibold mt-1 hidden"></p>
             </div>
 
             <div>
@@ -68,11 +68,11 @@
                 <textarea id="ghi_chu" rows="2" placeholder="Ví dụ: Máy quạt kêu to, bị nóng khi chơi game..." class="w-full border border-gray-300 rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-emerald-600 outline-none"></textarea>
             </div>
 
-            <div class="bg-blue-50 border-l-4 border-blue-600 p-3 rounded text-xs text-blue-900 leading-relaxed">
-                <i class="fa-solid fa-circle-info mr-1 text-blue-600"></i><strong>Lưu ý:</strong> Giới hạn <strong>05 suất/ngày</strong>. Kỹ thuật viên sẽ trực tiếp kiểm tra tình trạng máy và tư vấn gói dịch vụ ưu đãi phù hợp nhất khi quý khách mang máy tới.
+            <div class="bg-emerald-50 border-l-4 border-emerald-600 p-3 rounded text-xs text-emerald-900 leading-relaxed">
+                <i class="fa-solid fa-circle-info mr-1 text-emerald-600"></i>Laptop làm trong 30p (1 slot), PC làm trong 60p (2 slot liền kề). Giới hạn tối đa 5 slot/ngày.
             </div>
 
-            <button type="submit" id="btnSubmit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-xl transition duration-200 text-sm tracking-wider uppercase">
+            <button type="submit" id="btnSubmit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition text-sm tracking-wider uppercase">
                 XÁC NHẬN ĐẶT LỊCH GIỜ VÀNG
             </button>
         </form>
@@ -81,23 +81,100 @@
     </div>
 
     <script>
-        document.getElementById('ngay_hen').min = new Date().toISOString().split('T')[0];
+        const ALL_SLOTS = [
+            "10:00 - 10:30",
+            "10:30 - 11:00",
+            "11:00 - 11:30",
+            "11:30 - 12:00",
+            "12:00 - 12:30",
+            "12:30 - 13:00"
+        ];
+
+        const ngayHenInput = document.getElementById('ngay_hen');
+        const thietBiInput = document.getElementById('loai_thiet_bi');
+        const khungGioSelect = document.getElementById('khung_gio');
+        const slotWarning = document.getElementById('slotWarning');
+        const btnSubmit = document.getElementById('btnSubmit');
+
+        ngayHenInput.min = new Date().toISOString().split('T')[0];
+
+        // Lấy danh sách khung giờ trống khi đổi ngày hoặc chọn loại thiết bị
+        async function updateAvailableSlots() {
+            const ngay = ngayHenInput.value;
+            const thietBi = thietBiInput.value;
+
+            if (!ngay || !thietBi) {
+                khungGioSelect.disabled = true;
+                khungGioSelect.innerHTML = `<option value="">-- Chọn ngày & thiết bị trước --</option>`;
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/booked-slots?ngay=${ngay}`);
+                const data = await res.json();
+
+                if (data.isFullDay) {
+                    slotWarning.innerText = `Ngày ${ngay} đã kín hoàn toàn 5/5 slot. Vui lòng chọn ngày khác!`;
+                    slotWarning.classList.remove('hidden');
+                    khungGioSelect.disabled = true;
+                    khungGioSelect.innerHTML = `<option value="">-- Ngày đã hết slot --</option>`;
+                    btnSubmit.disabled = true;
+                    return;
+                } else {
+                    slotWarning.classList.add('hidden');
+                    btnSubmit.disabled = false;
+                }
+
+                const bookedSlots = data.bookedSlots || [];
+                khungGioSelect.disabled = false;
+                khungGioSelect.innerHTML = `<option value="">-- Chọn khung giờ --</option>`;
+
+                ALL_SLOTS.forEach((slot, index) => {
+                    let isAvailable = true;
+
+                    if (thietBi === 'Laptop') {
+                        if (bookedSlots.includes(slot)) isAvailable = false;
+                    } else if (thietBi === 'PC') {
+                        // PC chiếm 2 slot liền kề
+                        if (index === ALL_SLOTS.length - 1) {
+                            isAvailable = false; // Slot cuối không đủ 60p cho PC
+                        } else {
+                            const nextSlot = ALL_SLOTS[index + 1];
+                            if (bookedSlots.includes(slot) || bookedSlots.includes(nextSlot)) {
+                                isAvailable = false;
+                            }
+                        }
+                    }
+
+                    const opt = document.createElement('option');
+                    opt.value = slot;
+                    opt.textContent = isAvailable ? `${slot} (${thietBi === 'PC' ? 'Cần 60p' : '30p'})` : `${slot} (Đã có khách đặt)`;
+                    if (!isAvailable) opt.disabled = true;
+                    khungGioSelect.appendChild(opt);
+                });
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        ngayHenInput.addEventListener('change', updateAvailableSlots);
+        thietBiInput.addEventListener('change', updateAvailableSlots);
 
         document.getElementById('bookingForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btnSubmit');
             const msg = document.getElementById('responseMessage');
-            
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang đăng ký...';
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang đăng ký...';
             msg.className = 'mx-6 mb-6 hidden p-4 rounded-xl text-sm font-medium';
 
             const payload = {
                 ho_ten: document.getElementById('ho_ten').value,
                 sdt: document.getElementById('sdt').value,
-                loai_thiet_bi: document.getElementById('loai_thiet_bi').value,
-                ngay_hen: document.getElementById('ngay_hen').value,
-                khung_gio: document.getElementById('khung_gio').value,
+                loai_thiet_bi: thietBiInput.value,
+                ngay_hen: ngayHenInput.value,
+                khung_gio: khungGioSelect.value,
                 ghi_chu: document.getElementById('ghi_chu').value
             };
 
@@ -112,8 +189,9 @@
                 msg.classList.remove('hidden');
                 if (data.success) {
                     msg.classList.add('bg-green-50', 'border', 'border-green-200', 'text-green-800');
-                    msg.innerHTML = `<i class="fa-solid fa-circle-check text-green-600 mr-2 text-lg"></i><strong>${data.message}</strong><br><span class="text-xs text-gray-600">Mã đặt lịch: <strong>#MMZ-${data.booking_id}</strong>. Team Kỹ thuật MemoryZone Hà Nội sẽ liên hệ Zalo xác nhận giữ chỗ!</span>`;
+                    msg.innerHTML = `<i class="fa-solid fa-circle-check text-green-600 mr-2 text-lg"></i><strong>${data.message}</strong><br><span class="text-xs text-gray-600">Mã đơn: <strong>#MMZ-${data.booking_id}</strong>. Kỹ thuật viên sẽ liên hệ Zalo xác nhận!</span>`;
                     document.getElementById('bookingForm').reset();
+                    updateAvailableSlots();
                 } else {
                     msg.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800');
                     msg.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i> ${data.message}`;
@@ -121,10 +199,10 @@
             } catch (err) {
                 msg.classList.remove('hidden');
                 msg.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800');
-                msg.innerHTML = '❌ Lỗi kết nối mạng, vui lòng thử lại!';
+                msg.innerHTML = '❌ Lỗi kết nối máy chủ, vui lòng thử lại!';
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = 'XÁC NHẬN ĐẶT LỊCH GIỜ VÀNG';
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'XÁC NHẬN ĐẶT LỊCH GIỜ VÀNG';
             }
         });
     </script>
